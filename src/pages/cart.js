@@ -5,6 +5,7 @@ import CartItemList from '../components/CartItemList'
 import CartSummary from '../components/CartSummary'
 import CartContext from '../components/Context/CartContext'
 import Layout from '../components/Layout'
+import RecommendProductsShare from '../components/RecommendProductsShare'
 
 const Moltin = require('../../lib/moltin')
 
@@ -96,6 +97,7 @@ const Cart = ({location}) => {
           handleCheckout={handleCheckout}
         />
       )}
+      <RecommendProductsShare />
     </Layout>
   )
 }

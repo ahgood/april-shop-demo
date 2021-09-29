@@ -5,12 +5,18 @@ import SEO from '../components/SEO'
 import get from 'lodash/get'
 import ProductSummary from '../components/ProductSummary'
 import ProductAttributes from '../components/ProductAttributes'
+import RecommendProductsShare from '../components/RecommendProductsShare'
 import Layout from '../components/Layout'
 
 class ProductPageTemplate extends React.PureComponent {
   render() {
     const productInfo = get(this, 'props.data.allMoltinProduct')
-    const data = productInfo.edges[0].node
+    const filterProductsWithoutImages = productInfo.edges
+      .filter(v => v.node.mainImageHref)
+      .slice(0, 4)
+    const data = productInfo.edges.filter(
+      item => item.node.id === this.props.pathContext.id,
+    )[0].node
     const slug = data.slug
     const image = get(data, 'mainImageHref')
     const sizes = get(data, 'mainImage.childImageSharp.sizes')
@@ -31,6 +37,7 @@ class ProductPageTemplate extends React.PureComponent {
         <SEO title={slug} />
         <ProductSummary {...product} />
         <ProductAttributes {...product} />
+        <RecommendProductsShare />
       </Layout>
     )
   }
@@ -39,8 +46,8 @@ class ProductPageTemplate extends React.PureComponent {
 export default ProductPageTemplate
 
 export const pageQuery = graphql`
-  query ProductsQuery($id: String!) {
-    allMoltinProduct(filter: {id: {eq: $id}}) {
+  query ProductsQuery {
+    allMoltinProduct {
       edges {
         node {
           id
